@@ -23,10 +23,14 @@ const CreateNote = () => {
                 title: Title,
                 content: Content
             });
-            toast.success("Note Created");
+            toast.success("Note Created", {
+                    position: 'top-center'
+                });
             navigate("/"); 
         } catch (error) {
-            toast.error("Failed to Create Note");
+            toast.error("Failed to Create Note", {
+                    position: 'top-center'
+                });
         } finally {
             setloading(false); 
             setTitle("");

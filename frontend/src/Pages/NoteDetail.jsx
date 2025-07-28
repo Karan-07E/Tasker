@@ -50,11 +50,15 @@ const NoteDetail = () => {
         setsaving(true);
         try {
             await api.put(`/notes/${id}`, note);
-            toast.success("Note Updated Successfully");
+            toast.success("Note Updated Successfully", {
+                    position: 'top-center'
+                });
             navigate("/");
         } catch (error) {
             console.log("Error updating the note", error);
-            toast.error("Failed to update Note");
+            toast.error("Failed to update Note", {
+                position: 'top-center'
+            });
         } finally {
             setsaving(false);
         }
