@@ -1,6 +1,6 @@
 import Note from '../model/Note.js';
 
-export async function getAllNotes(req, res){
+export async function getAllNotes(_, res){
     try {
         const notes = await Note.find().sort({createdAt : -1}) //sort ensures newest is displayed first.
         res.status(200).json(notes);
@@ -51,7 +51,7 @@ export async function updateNotes(req, res){
 
 export async function deleteNotes(req, res){
     try {
-        const deletedNote = await Note.findByIdAndDelete(req.param.id);
+        const deletedNote = await Note.findByIdAndDelete(req.params.id);
         if(!deletedNote) return res.status(404).json({message : "Note not found to be deleted"});
         res.status(200).json(deletedNote);
     } catch (error) {
