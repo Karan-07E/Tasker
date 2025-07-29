@@ -6,14 +6,19 @@ import dotenv from "dotenv";
 import rateLimiter from './middleware/ratelimiter.js';
 import cors from 'cors';
 dotenv.config({ quiet: true });
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve();
 
 //middleware
+// Simple CORS configuration
 app.use(cors({
-    origin : "http://localhost:5173", // allow requests from the frontend
+    origin: true, // Allow all origins in development and production
+    credentials: true
 }));
+
 app.use(express.json());    //to read data from the request body
 app.use(rateLimiter);       // to limit the rate of requests
 
@@ -22,6 +27,15 @@ app.use(rateLimiter);       // to limit the rate of requests
 // rate limiting is something that describes how many requests a user can make in a given time period
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', notesRoutes);
+
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+    app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname,"../frontend","dist","index.html"));
+});
+}
 
 
 connectDB().then(() => {

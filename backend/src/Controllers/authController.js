@@ -1,5 +1,6 @@
 import User from '../model/User.js';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -98,6 +99,81 @@ export async function getCurrentUser(req, res) {
         });
     } catch (error) {
         console.error('Get current user error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// Forgot password - generate reset token
+export async function forgotPassword(req, res) {
+    try {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'No user found with that email address' });
+        }
+
+        // Generate reset token
+        const resetToken = user.createPasswordResetToken();
+        await user.save({ validateBeforeSave: false });
+
+        // In a real application, you would send this token via email
+        // For demo purposes, we'll return it in the response
+        res.status(200).json({
+            message: 'Password reset token generated',
+            resetToken: resetToken, // Remove this in production!
+            resetUrl: `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`
+        });
+
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// Reset password with token
+export async function resetPassword(req, res) {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        // Hash the token to compare with stored hash
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(token)
+            .digest('hex');
+
+        // Find user with valid token that hasn't expired
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Token is invalid or has expired' });
+        }
+
+        // Update password
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        // Generate new JWT token
+        const jwtToken = generateToken(user._id);
+
+        res.status(200).json({
+            message: 'Password reset successful',
+            token: jwtToken,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        console.error('Reset password error:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }

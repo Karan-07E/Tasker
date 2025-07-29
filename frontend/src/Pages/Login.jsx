@@ -48,11 +48,11 @@ const Login = () => {
     return (
         <>
             <header className='bg-base-300 border-b border-base-content/10'>
-                <div className='mx-auto max-w-6xl p-4'>
-                    <div className='flex items-center justify-between'>
-                        <h1 className='text-3xl font-bold text-primary font-mono tracking-tight'>Tasker</h1>
+                    <div className='mx-auto max-w-6xl p-4'>
+                        <div className='flex items-center justify-between'>
+                            <h1 className='text-3xl font-bold text-primary font-mono tracking-tight'>Tasker</h1>
+                        </div>
                     </div>
-                </div>
             </header>
             
             <div className="min-h-screen bg-base-200 flex items-center justify-center">
@@ -102,7 +102,10 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div className="text-center mt-4">
+                    <div className="text-center mt-4 space-y-2">
+                        <Link to="/forgot-password" className="link link-primary block">
+                            Forgot your password?
+                        </Link>
                         <p>Don't have an account? 
                             <Link to="/register" className="link link-primary ml-1">
                                 Register here

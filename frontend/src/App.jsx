@@ -8,6 +8,8 @@ import CreateNote from './Pages/CreateNote';
 import NoteDetail from './Pages/NoteDetail';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 
 // use daisyui for optimised UI components
 // use react-hot-toast for toast notifications
@@ -21,6 +23,8 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/" element={
             <ProtectedRoute>
               <HomePage />
