@@ -6,7 +6,6 @@ Tasker is a minimal and intuitive web-based note-taking application designed to 
 🌙 Clean and responsive UI
 🔍 Search and filter notes instantly
 ☁️ Persistent storage with backend support
-
 🔐 User authentication (using JWT token)
 
 # 🛠️ Tech Stack
@@ -32,7 +31,7 @@ Others: Git, DaisyUI, bg.ibelick, Postman for API testing
 
 # 🧪 Usage
 1. Run both backend and frontend.
-2. Open your browser at http://localhost:5001.
+2. Open your browser at http://localhost:5173.
 3. Sign up or log in (if auth is included).
 4. Start creating and managing your notes.
 
