@@ -31,7 +31,7 @@ Others: Git, DaisyUI, bg.ibelick, Postman for API testing
 # 🧪 Usage
 1. Run both backend and frontend.
 2. Open your browser at http://localhost:5173.
-3. Sign up or log in (if auth is included).
+3. Sign up or log in.
 4. Start creating and managing your notes.
 
 # 🤝 Contributing
@@ -44,4 +44,5 @@ This project is licensed under the MIT License.
 - React
 - MongoDB
 - Express
+- Rest API
 
