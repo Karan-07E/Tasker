@@ -4,7 +4,6 @@ Tasker is a minimal and intuitive web-based note-taking application designed to 
 # 🚀 Features
 ✍️ Create, edit, and delete notes
 🌙 Clean and responsive UI
-🔍 Search and filter notes instantly
 ☁️ Persistent storage with backend support
 🔐 User authentication (using JWT token)
 
