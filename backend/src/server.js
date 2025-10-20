@@ -16,7 +16,7 @@ const __dirname = path.resolve();
 // Simple CORS configuration
 app.use(cors({
     origin: true, // Allow all origins in development and production
-    credentials: true
+    credentials: true 
 }));
 
 app.use(express.json());    //to read data from the request body
