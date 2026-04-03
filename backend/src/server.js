@@ -7,6 +7,7 @@ import rateLimiter from './middleware/ratelimiter.js';
 import cors from 'cors';
 dotenv.config({ quiet: true });
 import path from 'path';
+import { timeStamp } from 'console';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -37,6 +38,13 @@ if(process.env.NODE_ENV === "production"){
 });
 }
 
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ 
+        status: "success",
+        uptime: process.uptime(),
+        timeStamp: Date.now()
+    });
+})
 
 connectDB().then(() => {
     app.listen(PORT, () => {
