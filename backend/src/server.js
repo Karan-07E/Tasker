@@ -3,11 +3,10 @@ import notesRoutes from './Routes/notesRoutes.js';
 import authRoutes from './Routes/authRoutes.js';
 import { connectDB } from './config/db.js';
 import dotenv from "dotenv";
-import rateLimiter from './middleware/ratelimiter.js';
+import rateLimit from './middleware/ratelimiter.js';
 import cors from 'cors';
 dotenv.config({ quiet: true });
 import path from 'path';
-import { timeStamp } from 'console';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -21,7 +20,7 @@ app.use(cors({
 }));
 
 app.use(express.json());    //to read data from the request body
-app.use(rateLimiter);       // to limit the rate of requests
+app.use(rateLimit);
 
 // middleware is used to handle something before the request reaches the route handler
 // it is used to check if the user is authenticated or not and also used in something called as rate limiting

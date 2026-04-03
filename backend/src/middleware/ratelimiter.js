@@ -1,16 +1,30 @@
-import rateLimit from '../config/upstash.js';
+// rateLimiter.js
+import { redis } from "../config/redis-client.js";
 
-const rateLimiter = async (req ,res , next) => {
-    try {
-        const {success} = await rateLimit.limit("my-rate-limit");
-        if(!success){
-            return res.status(429).json({message : "Too many requests, please try again"});
-        }
-        next();
-    } catch (error) {
-        console.log("Rate limit error");
-        next(error);
+export const rateLimit = async (req, res, next) => {
+  try {
+    if (!redis || !redis.isReady) {
+      return next();
     }
-} 
 
-export default rateLimiter;
+    const ip = req.ip;
+    const key = `rate:${ip}`;
+
+    const current = await redis.incr(key);
+
+    if (current === 1) {
+      await redis.expire(key, 10); // 10 sec window
+    }
+
+    if (current > 10) {
+      return res.status(429).json({ message: "Too many requests" });
+    }
+
+    next();
+  } catch (err) {
+    console.error("Rate limiter failed:", err);
+    next(); // fail-open (important)
+  }
+};
+
+export default rateLimit;
